@@ -16,11 +16,15 @@ export default function LoginScreen() {
         try {
             if (username !== "" && password !== "") {
 
-                const data = await api.get(`api/User/Login/${username}/${password}`);
-                if (data) {
-                    console.log("Usuario encontrado:", data);
-                    router.replace("/(tabs)");
-                }
+const data = await api.get(`api/User/Login/${username}/${password}`);
+if (data) {
+  console.log("Usuario encontrado:", data);
+  router.replace({
+    pathname: "/(tabs)",
+    params: { username: data.name },
+  });
+}
+
                 else {
                     setError("Usuario o contraseña incorrectos.");
                     console.log("Usuario o contraseña incorrectos.");
@@ -65,7 +69,7 @@ export default function LoginScreen() {
                 <Text className="text-white font-bold text-lg">Iniciar Sesión</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push("/Register")}>
+            <TouchableOpacity onPress={() => router.push("/register")}>
                 <ThemedText className="text-white underline">¿No tienes cuenta? Regístrate</ThemedText>
             </TouchableOpacity>
         </ThemedView>

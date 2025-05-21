@@ -1,9 +1,9 @@
+import { api } from "@/api/axiosClient";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity } from "react-native";
-import { api } from "@/api/axiosClient";
 
 export default function RegisterScreen({ navigation }: any) {
     const [username, setUsername] = useState("");
@@ -11,14 +11,26 @@ export default function RegisterScreen({ navigation }: any) {
     const [error, setError] = useState("");
 
     const handleRegister = () => {
-if(username !== "" && password != ""){
-            console.log(`Registrado: ${username}`);
-        router.push("/Login")
-        } 
-    else{
-        setError("Por favor, completa todos los campos.");
+        if (username !== "" && password != "") {
+
+            try {
+api.post("api/User/CreateUser", {
+                name: username,
+                password: password,
+            })
+
+                console.log(`Registrado: ${username}`);
+                router.push("/login")
+
+            } catch (error) {
+                console.error("Error al registrar usuario:", error);
+            }
         }
-    
+
+        else {
+            setError("Por favor, completa todos los campos.");
+        }
+
     };
 
     return (
@@ -43,7 +55,7 @@ if(username !== "" && password != ""){
                 onChangeText={setPassword}
                 className="w-full bg-white p-4 rounded-2xl mb-6 text-black"
             />
-{error ? (
+            {error ? (
                 <Text className="text-yellow-700 mb-4">{error}</Text>
             ) : null}
             <TouchableOpacity
@@ -52,10 +64,10 @@ if(username !== "" && password != ""){
             >
                 <Text className="text-white font-bold text-lg">Registrarse</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push("/Login")}>
+            <TouchableOpacity onPress={() => router.push("/login")}>
                 <ThemedText className="text-white underline">¿Ya tienes cuenta? Inicia Secion</ThemedText>
             </TouchableOpacity>
-            
+
         </ThemedView>
     );
 }
