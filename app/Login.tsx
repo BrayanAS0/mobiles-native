@@ -11,20 +11,20 @@ export default function LoginScreen() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
-    useEffect(() => {}, [])
+    useEffect(() => { }, [])
     const fetchUsers = async () => {
         try {
             if (username !== "" && password !== "") {
 
                 const data = await api.get(`api/User/Login/${username}/${password}`);
-if (data) {
-    console.log("Usuario encontrado:", data);
-            router.replace("/(tabs)"); 
-}
-else{
-    setError("Usuario o contraseña incorrectos.");
-    console.log("Usuario o contraseña incorrectos.");
-}
+                if (data) {
+                    console.log("Usuario encontrado:", data);
+                    router.replace("/(tabs)");
+                }
+                else {
+                    setError("Usuario o contraseña incorrectos.");
+                    console.log("Usuario o contraseña incorrectos.");
+                }
             }
             else {
                 setError("Por favor, ingresa usuario y contraseña.");
