@@ -11,27 +11,27 @@ export default function LoginScreen() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
-useEffect(()=>{
-fetchUsers();
+    useEffect(() => {}, [])
+    const fetchUsers = async () => {
+        try {
+            if (username !== "" && password !== "") {
 
-
-
-  
-},[])
-const fetchUsers = async () => {
-    try {
-        const data = await api.get("WeatherForecast/prueba1");
-        console.log("Usuarios:", data);
-    } catch (error) {
-
-    }
-};
-    const handleLogin = () => {
-        if (username === "admin" && password === "1234") {
-            setError("");
+                const data = await api.get(`api/User/Login/${username}/${password}`);
+if (data) {
+    console.log("Usuario encontrado:", data);
             router.replace("/(tabs)"); 
-        } else {
-            setError("Usuario o contraseña incorrectos.");
+}
+else{
+    setError("Usuario o contraseña incorrectos.");
+    console.log("Usuario o contraseña incorrectos.");
+}
+            }
+            else {
+                setError("Por favor, ingresa usuario y contraseña.");
+                console.log("Por favor, ingresa usuario y contraseña.");
+            }
+        } catch (error) {
+            console.error("Error al obtener usuarios:", error);
         }
     };
 
@@ -59,14 +59,14 @@ const fetchUsers = async () => {
             {error ? <Text className="text-yellow-300 mb-4">{error}</Text> : null}
 
             <TouchableOpacity
-                onPress={fetchUsers}
+                onPress={() => fetchUsers()}
                 className="w-full bg-black p-4 rounded-2xl items-center mb-4"
             >
                 <Text className="text-white font-bold text-lg">Iniciar Sesión</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push("/Register")}>
-            <ThemedText className="text-white underline">¿No tienes cuenta? Regístrate</ThemedText>
+                <ThemedText className="text-white underline">¿No tienes cuenta? Regístrate</ThemedText>
             </TouchableOpacity>
         </ThemedView>
     );
