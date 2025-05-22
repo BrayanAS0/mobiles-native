@@ -1,7 +1,7 @@
 import { api } from "@/api/axiosClient";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useUserStore } from "@/store/useUserStore"; // Zustand
+import { useUserStore, useUserStoreId } from "@/store/useUserStore"; // Zustand
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity } from "react-native";
@@ -15,7 +15,7 @@ export default function LoginScreen() {
 
   // ✅ Usar Zustand fuera de lógica condicional
   const setUser = useUserStore((state) => state.setUsername);
-
+const setId = useUserStoreId ((id)=> id.setUserId)
   const fetchUsers = async () => {
     try {
       if (username !== "" && password !== "") {
@@ -23,10 +23,9 @@ export default function LoginScreen() {
 
         if (data) {
           console.log("✅ Usuario encontrado:", data);
-
-          // ✅ Guardar en Zustand
-
-          // ✅ Redirigir
+  setUser(data.name); 
+setId(data.id)
+   
           router.replace("/(tabs)");
         } else {
           setError("Usuario o contraseña incorrectos.");
