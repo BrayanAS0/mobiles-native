@@ -1,27 +1,25 @@
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import { useUserStore } from "@/store/useUserStore";
+import { useUserStoreId } from "../../store/useUserStore";
 import { useColorScheme } from "nativewind";
 import { useEffect, useState } from "react";
 import { Pressable, Switch, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useUserStoreId } from '../../store/useUserStore';
-import { ThemedView } from "@/components/ThemedView";
+import { router } from "expo-router";
+import { Feather } from "@expo/vector-icons"; 
 
 export default function Config() {
-  // ✅ Zustand (hooks deben ir DENTRO del componente)
   const username = useUserStore((state) => state.username);
   const userId = useUserStoreId((state) => state.id);
 
-  // ✅ Nativewind dark mode
   const { colorScheme, setColorScheme } = useColorScheme();
 
-  // ✅ Estado del switch sincronizado con el tema
   const [darkModeSetting, setDarkModeSetting] = useState({
     darkMode: colorScheme === "dark",
     systemMode: false,
   });
 
-  // ✅ Mantener estado sincronizado con colorScheme si cambia externamente
   useEffect(() => {
     setDarkModeSetting((prev) => ({
       ...prev,
@@ -38,35 +36,58 @@ export default function Config() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, padding: 20 }}>
-      <ThemedText type="title" className="text-xl mb-4">
-        Configuración
-      </ThemedText>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ThemedView className="flex-1 px-6 py-8 bg-white dark:bg-neutral-900 space-y-6">
+        <View className="flex-row items-center space-x-2">
+          <Feather name="settings" size={24} color={colorScheme === "dark" ? "white" : "black"} />
+          <ThemedText className="text-2xl font-bold text-black dark:text-white">
+            Configuración
+          </ThemedText>
+        </View>
 
-      <ThemedText style={{ fontSize: 18, marginBottom: 8 }}>
-        Bienvenido, {username || "Usuario"} 👋
-      </ThemedText>
-      <ThemedText style={{ fontSize: 18, marginBottom: 8 }}>
-        Bienvenido, {userId || "Usuario"} 👋
-      </ThemedText>
-      <ThemedView className=" dark:bg-black" >
-        <Text style={{ marginBottom: 8 }}>Tema oscuro</Text>
-        <Switch
-          value={darkModeSetting.darkMode}
-          onValueChange={setDarkMode}
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={darkModeSetting.darkMode ? "#f5dd4b" : "#f4f3f4"}
-        />
+        <View className="rounded-2xl p-4 bg-gray-100 dark:bg-neutral-800 shadow-sm space-y-2">
+          <View className="flex-row items-center space-x-2">
+            <Feather name="user" size={20} color={colorScheme === "dark" ? "white" : "black"} />
+            <ThemedText className="text-lg text-black dark:text-white">
+              Hola, <Text className="font-semibold">{username || "Usuario"}</Text>
+            </ThemedText>
+          </View>
+
+          <View className="flex-row items-center space-x-2">
+            <Feather name="hash" size={20} color={colorScheme === "dark" ? "white" : "gray"} />
+            <ThemedText className="text-sm text-gray-600 dark:text-gray-400">
+              ID de usuario: <Text className="font-semibold">{String(userId) || "N/A"}</Text>
+            </ThemedText>
+          </View>
+        </View>
+
+        <View className="flex-row justify-between items-center p-4 rounded-2xl bg-gray-100 dark:bg-neutral-800">
+          <View className="flex-row items-center space-x-2">
+            <Feather
+              name={darkModeSetting.darkMode ? "moon" : "sun"}
+              size={20}
+              color={colorScheme === "dark" ? "white" : "black"}
+            />
+            <Text className="text-base text-black dark:text-white">Tema oscuro</Text>
+          </View>
+          <Switch
+            value={darkModeSetting.darkMode}
+            onValueChange={setDarkMode}
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={darkModeSetting.darkMode ? "#f5dd4b" : "#f4f3f4"}
+          />
+        </View>
+
+        <Pressable
+          onPress={() => router.push("/login")}
+          className="bg-red-500 py-4 rounded-2xl items-center mt-4 shadow-md"
+        >
+          <View className="flex-row items-center space-x-2">
+            <Feather name="log-out" size={20} color="white" />
+            <Text className="text-white text-base font-semibold">Cerrar sesión</Text>
+          </View>
+        </Pressable>
       </ThemedView>
-
-      <Pressable
-        onPress={() => console.log("Otra acción")}
-        style={{ marginTop: 20 }}
-      >
-        <ThemedText className="text-white bg-blue-500 px-4 py-2 rounded-xl text-center">
-          Botón adicional
-        </ThemedText>
-      </Pressable>
     </SafeAreaView>
   );
 }

@@ -44,7 +44,7 @@ api.post("api/User/CreateUser", {
                 placeholderTextColor="#ccc"
                 value={username}
                 onChangeText={setUsername}
-                className="w-full bg-white p-4 rounded-2xl mb-4 text-black"
+        className="w-full bg-gray-100 p-4 rounded-2xl mb-4 text-black"
             />
 
             <TextInput
@@ -53,7 +53,7 @@ api.post("api/User/CreateUser", {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
-                className="w-full bg-white p-4 rounded-2xl mb-6 text-black"
+        className="w-full bg-gray-100 p-4 rounded-2xl mb-4 text-black"
             />
             {error ? (
                 <Text className="text-yellow-700 mb-4">{error}</Text>

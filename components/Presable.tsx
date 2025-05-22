@@ -7,22 +7,18 @@ type CustomPressableProps = ThemedViewProps & {
 };
 
 export default function CustomPressable({
-  id,
   style,
   lightColor,
   darkColor,
   onPress,
   ...otherProps
 }: CustomPressableProps) {
-  //   const theme = useColorScheme() ?? 'light';
-  //     const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
-
   return (
     <TouchableOpacity
-      className="bg-stone-300 m-0 p-6 rounded-lg dark:bg-stone-800 active:opacity-80"
       onPress={onPress}
+      className="bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-700 rounded-2xl px-5 py-4 mb-4 shadow-sm dark:shadow-md active:opacity-80"
     >
-      <ThemedText className="text-white dark:text-black font-semibold text-center">
+      <ThemedText className="text-black dark:text-white font-semibold text-base text-center">
         {otherProps.children}
       </ThemedText>
     </TouchableOpacity>

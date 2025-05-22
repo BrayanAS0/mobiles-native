@@ -13,7 +13,6 @@ export default function LoginScreen() {
 
   const router = useRouter();
 
-  // ✅ Usar Zustand fuera de lógica condicional
   const setUser = useUserStore((state) => state.setUsername);
 const setId = useUserStoreId ((id)=> id.setUserId)
   const fetchUsers = async () => {
@@ -23,9 +22,9 @@ const setId = useUserStoreId ((id)=> id.setUserId)
 
         if (data) {
           console.log("✅ Usuario encontrado:", data);
-  setUser(data.name); 
-setId(data.id)
-   
+          setUser(data.name);
+          setId(data.id);
+
           router.replace("/(tabs)");
         } else {
           setError("Usuario o contraseña incorrectos.");
@@ -42,7 +41,7 @@ setId(data.id)
 
   return (
     <ThemedView className="flex-1 items-center justify-center bg-red-500 px-6">
-      <ThemedText type="title" className="text-white text-3xl mb-8">
+      <ThemedText type="title" className="text-white text-3xl mb-8 p-2">
         Login
       </ThemedText>
 
@@ -51,7 +50,7 @@ setId(data.id)
         placeholderTextColor="#ccc"
         value={username}
         onChangeText={setUsername}
-        className="w-full bg-white p-4 rounded-2xl mb-4 text-black"
+        className="w-full bg-gray-100 p-4 rounded-2xl mb-4 text-black"
       />
 
       <TextInput
@@ -60,7 +59,7 @@ setId(data.id)
         secureTextEntry
         value={password}
         onChangeText={setPassword}
-        className="w-full bg-white p-4 rounded-2xl mb-4 text-black"
+        className="w-full bg-gray-100 p-4 rounded-2xl mb-4 text-black"
       />
 
       {error ? (
